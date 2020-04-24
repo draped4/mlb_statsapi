@@ -1,0 +1,14 @@
+# OS Specific
+.DS_Store
+
+.tmp
+env/
+
+# Python
+__pycache__
+*.egg*
+*.coverage*
+*.xml
+htmlcov
+.tox
+.pytest*
