@@ -1,8 +1,14 @@
+# CLI Tool for MLB's StatsAPI
+
+Documentation in progress...
+
 https://click.palletsprojects.com/en/7.x/setuptools/#setuptools-integration
 
-virtualenv venv
-. venv/bin/activate
-pip install --editable .
+```sh
+$ virtualenv venv
+$ . venv/bin/activate
+$ pip install --editable .
+```
 
 # MLB StatsAPI Endpoints
 https://github.com/toddrob99/MLB-StatsAPI/wiki/Endpoints
