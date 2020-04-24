@@ -3,7 +3,8 @@
 
 .tmp
 env/
-venv
+.venv
+venv/
 
 # Python
 __pycache__
