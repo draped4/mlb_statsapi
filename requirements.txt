@@ -1,2 +1,7 @@
-click==7.1.1
+certifi==2020.4.5.1
+chardet==3.0.4
+Click==7.0
+idna==2.9
 requests==2.23.0
+-e git+https://github.com/draped4/mlb_statsapi.git@282d8bcd9b3b884d67fe1b188f29932fc735cb9a#egg=statsapi
+urllib3==1.25.9
