@@ -9,6 +9,9 @@ import click
 
 """internal statsapi modules"""
 from src.main import pass_environment, VERSION, STATSAPI_URL
+from src.lib import (
+    write_json_to_file,
+)
 
 FILENAME = "lookup_players_" + datetime.today().strftime('%Y_%m_%d_%H_%M_%S') + ".json"
 
@@ -49,10 +52,19 @@ def cli(ctx, value, game_type, season, sport_id, output):
 
     ctx.log("+ Retrieving and filtering players...")
 
-    url = STATSAPI_URL + "/sports/" + str(sport_id) + "/players"
-    params = {'season': season, 'gameType': game_type}
-    r = requests.get(url = url, params = params)
-    data = r.json()
+    try:
+        url = STATSAPI_URL + "/sports/" + str(sport_id) + "/players"
+        params = {'season': season, 'gameType': game_type}
+        r = requests.get(url = url, params = params)
+        data = r.json()
+    except:
+        ctx.log(
+            "Could not lookup players with value = {0}, game-type = {1}, season = {2}, and sport-id = {3}.".format(
+                value, game_type, season, sport_id
+            ),
+            level="error",
+        )
+        raise click.UsageError("Failed to make request.")
 
     players = []
     for player in data["people"]:
@@ -63,8 +75,6 @@ def cli(ctx, value, game_type, season, sport_id, output):
 
     ctx.log("+ Writing players' information to {0}...".format(output_path))
 
-    file = open(output_path, "w")
-    n = file.write(json.dumps(players, sort_keys=True, indent=4))
-    file.close()
+    write_json_to_file(players, output_path)
 
     ctx.log("Complete")

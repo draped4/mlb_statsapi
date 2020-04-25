@@ -9,14 +9,17 @@ import click
 
 """internal statsapi modules"""
 from src.main import pass_environment, VERSION, STATSAPI_URL
+from src.lib import (
+    write_json_to_file,
+)
 
 FILENAME = "get_gamepks_" + datetime.today().strftime('%Y_%m_%d_%H_%M_%S') + ".json"
 
 @click.command("get-gamepks", short_help="Get game pks for a date range from statsapi.")
 @click.option(
     "--start",
-    required=True,
-    help="Start date to search after, inclusive."
+    help="Start date to search after, inclusive.",
+    default=datetime.today().strftime('%m/%d/%Y')
 )
 @click.option(
     "--end",
@@ -44,10 +47,19 @@ def cli(ctx, start, end, sport_id, output):
 
     ctx.log("+ Retrieving game pks from {0} to {1}...".format(start, end))
 
-    url = STATSAPI_URL + "/schedule"
-    params = {'sportId': sport_id, 'startDate': start, 'endDate': end, 'fields': ['dates','games','gamePk','date']}
-    r = requests.get(url = url, params = params)
-    data = r.json()
+    try:
+        url = STATSAPI_URL + "/schedule"
+        params = {'sportId': sport_id, 'startDate': start, 'endDate': end, 'fields': ['dates','games','gamePk','date']}
+        r = requests.get(url = url, params = params)
+        data = r.json()
+    except:
+        ctx.log(
+            "Could not get game PKs with start = {0}, end = {1}, and sport-id = {2}.".format(
+                start, end, sport_id
+            ),
+            level="error",
+        )
+        raise click.UsageError("Failed to make request.")
 
     ctx.log("+ Writing game pks to {0}...".format(output_path))
 
@@ -56,8 +68,6 @@ def cli(ctx, start, end, sport_id, output):
     	for game in day['games']:
     		game_pk_list.append(game['gamePk'])
 
-    file = open(output_path, "w")
-    n = file.write(json.dumps(game_pk_list, sort_keys=True, indent=4))
-    file.close()
+    write_json_to_file(game_pk_list, output_path)
 
     ctx.log("Complete")

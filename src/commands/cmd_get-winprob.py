@@ -9,6 +9,9 @@ import click
 
 """internal statsapi modules"""
 from src.main import pass_environment, VERSION, STATSAPI_URL
+from src.lib import (
+    write_json_to_file,
+)
 
 FILENAME = "get_winprob_" + datetime.today().strftime('%Y_%m_%d_%H_%M_%S') + ".json"
 
@@ -34,15 +37,22 @@ def cli(ctx, game_pk, output):
 
     ctx.log("+ Retrieving win probabilities from {0}...".format(game_pk))
 
-    url = STATSAPI_URL + "/game/" + game_pk + "/winProbability"
-    params = {'fields': ['atBatIndex','playEndTime','homeTeamWinProbability','awayTeamWinProbability','homeTeamWinProbabilityAdded']}
-    r = requests.get(url = url, params = params)
-    data = r.json()
+    try:
+        url = STATSAPI_URL + "/game/" + game_pk + "/winProbability"
+        params = {'fields': ['atBatIndex','playEndTime','homeTeamWinProbability','awayTeamWinProbability','homeTeamWinProbabilityAdded']}
+        r = requests.get(url = url, params = params)
+        data = r.json()
+    except:
+        ctx.log(
+            "Could not get win probabilities with game-pk = {0}.".format(
+                game_pk
+            ),
+            level="error",
+        )
+        raise click.UsageError("Failed to make request.")
 
     ctx.log("+ Writing win probabilities to {0}...".format(output_path))
 
-    file = open(output_path, "w")
-    n = file.write(json.dumps(data, sort_keys=True, indent=4))
-    file.close()
+    write_json_to_file(data, output_path)
 
     ctx.log("Complete")

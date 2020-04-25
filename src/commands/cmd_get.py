@@ -9,6 +9,9 @@ import click
 
 """internal statsapi modules"""
 from src.main import pass_environment, VERSION, STATSAPI_URL
+from src.lib import (
+    write_json_to_file,
+)
 
 @click.command("get", short_help="Get response directly from statsapi.")
 @click.option(
@@ -38,15 +41,22 @@ def cli(ctx, module, params, output):
 
     ctx.log("+ Retrieving get request for {0} module...".format(module))
 
-    url = STATSAPI_URL + "/" + module
-    parameters = json.loads(params.replace("\'","\""))
-    r = requests.get(url = url, params = parameters)
-    data = r.json()
+    try:
+        url = STATSAPI_URL + "/" + module
+        parameters = json.loads(params.replace("\'","\""))
+        r = requests.get(url = url, params = parameters)
+        data = r.json()
+    except:
+        ctx.log(
+            "Could not make request to MLB's StatsAPI with module = {0} and params = {1}.".format(
+                module, params
+            ),
+            level="error",
+        )
+        raise click.UsageError("Failed to make request.")
 
     ctx.log("+ Writing get response to {0}...".format(output_path))
 
-    file = open(output_path, "w")
-    n = file.write(json.dumps(data, sort_keys=True, indent=4))
-    file.close()
+    write_json_to_file(data, output_path)
 
     ctx.log("Complete")
