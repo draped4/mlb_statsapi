@@ -139,7 +139,7 @@ All output files are located in the specified output directory or if none is spe
 
 ## Python wrapper for MLB StatsAPI Endpoints
 
-An unassociated existing python wrapper for the MLB StatsAPI endpoints exists at the following git repo and contains documentation of existing MLB StatsAPI endpoints.  
+An unassociated existing python wrapper for the MLB StatsAPI endpoints exists at the following repo and contains documentation of existing MLB StatsAPI endpoints.  
 
 https://github.com/toddrob99/MLB-StatsAPI  
 https://github.com/toddrob99/MLB-StatsAPI/wiki/Endpoints  
