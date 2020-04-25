@@ -66,7 +66,7 @@ Options:
 ```
 ### `statsapi get-gamepks`  
 ```sh
-$ statsapi get-gamepks  --help
+$ statsapi get-gamepks --help
 Usage: statsapi get-gamepks [OPTIONS]
 
   get-gamepks retrieves game pks for every day within the date range.
@@ -83,7 +83,7 @@ Options:
 ```
 ### `statsapi get-winprob`  
 ```sh
-$ statsapi get-winprob  --help
+$ statsapi get-winprob --help
 Usage: statsapi get-winprob [OPTIONS]
 
   get-winprob retrieves win probabilities for a game.
@@ -97,7 +97,7 @@ Options:
 ```
 ### `statsapi lookup-players`
 ```sh
-$ statsapi lookup-players  --help
+$ statsapi lookup-players --help
 Usage: statsapi lookup-players [OPTIONS]
 
   lookup-players searches for players with the specified value in their
