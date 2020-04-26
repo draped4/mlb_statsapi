@@ -8,9 +8,6 @@ setup(
     author_email="draped4@gmail.com",
     keywords="mlb statsapi cli pitchfx sabermetrics",
     packages=find_packages(exclude=["tests"]),
-    install_requires=[
-        "Click==7.0",
-        "requests==2.23.0"
-    ],
+    install_requires=["Click==7.0", "requests==2.23.0"],
     entry_points={"console_scripts": ["statsapi=src.main:cli"]},
 )

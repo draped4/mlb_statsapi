@@ -1,7 +1,14 @@
+appdirs==1.4.3
+attrs==19.3.0
+black==19.10b0
 certifi==2020.4.5.1
 chardet==3.0.4
 Click==7.0
 idna==2.9
+pathspec==0.8.0
+regex==2020.4.4
 requests==2.23.0
--e git+https://github.com/draped4/mlb_statsapi.git@282d8bcd9b3b884d67fe1b188f29932fc735cb9a#egg=statsapi
+-e git+https://github.com/draped4/mlb_statsapi.git@11b2af267e8ea5cecd745967b65ce3674045f4f0#egg=statsapi
+toml==0.10.0
+typed-ast==1.4.1
 urllib3==1.25.9

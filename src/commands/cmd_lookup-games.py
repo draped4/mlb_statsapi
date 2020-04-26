@@ -9,38 +9,31 @@ import click
 
 """internal statsapi modules"""
 from src.main import pass_environment, VERSION, STATSAPI_URL
-from src.lib import (
-    write_json_to_file,
-)
+from src.lib import write_json_to_file
 
-FILENAME = "lookup_games_" + datetime.today().strftime('%Y_%m_%d_%H_%M_%S') + ".json"
+FILENAME = "lookup_games_" + datetime.today().strftime("%Y_%m_%d_%H_%M_%S") + ".json"
+
 
 @click.command("lookup-games", short_help="Lookup games by a value.")
 @click.option(
-    "--value",
-    required=True,
-    help="The value to search for in game profiles."
+    "--value", required=True, help="The value to search for in game profiles."
 )
 @click.option(
     "--start",
     help="Start date to search after, inclusive.",
-    default=datetime.today().strftime('%m/%d/%Y')
+    default=datetime.today().strftime("%m/%d/%Y"),
 )
 @click.option(
     "--end",
     help="End date to search before, inclusive.",
-    default=datetime.today().strftime('%m/%d/%Y')
+    default=datetime.today().strftime("%m/%d/%Y"),
 )
-@click.option(
-    "--sport-id",
-    help="Sport ID, MLB = 1",
-    default=1
-)
+@click.option("--sport-id", help="Sport ID, MLB = 1", default=1)
 @click.option(
     "--output",
     help="Location for the output file.",
     default=".",
-    type=click.Path(exists=True)
+    type=click.Path(exists=True),
 )
 @pass_environment
 def cli(ctx, value, start, end, sport_id, output):
@@ -54,8 +47,8 @@ def cli(ctx, value, start, end, sport_id, output):
 
     try:
         url = STATSAPI_URL + "/schedule"
-        params = {'sportId': sport_id, 'startDate': start, 'endDate': end}
-        r = requests.get(url = url, params = params)
+        params = {"sportId": sport_id, "startDate": start, "endDate": end}
+        r = requests.get(url=url, params=params)
         data = r.json()
     except:
         ctx.log(

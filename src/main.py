@@ -16,6 +16,7 @@ def print_version(ctx, param, value):
     click.secho("statsapi version: v%s" % VERSION, fg="blue")
     ctx.exit()
 
+
 # Determine the color based on log level.
 def log_level(argument):
     switcher = {
@@ -27,6 +28,7 @@ def log_level(argument):
         "verbose": "reset",
     }
     return switcher.get(argument, "green")
+
 
 class Environment(object):
     def __init__(self):
@@ -48,8 +50,10 @@ class Environment(object):
         if self.verbose:
             self.log(msg, level="verbose", *args)
 
+
 pass_environment = click.make_pass_decorator(Environment, ensure=True)
 cmd_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), "commands"))
+
 
 class STATSAPI_CLI(click.MultiCommand):
     def list_commands(self, ctx):

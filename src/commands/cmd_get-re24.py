@@ -14,19 +14,19 @@ from src.lib import (
     get_re24,
 )
 
-FILENAME = "get_re24_" + datetime.today().strftime('%Y_%m_%d_%H_%M_%S') + ".json"
+FILENAME = "get_re24_" + datetime.today().strftime("%Y_%m_%d_%H_%M_%S") + ".json"
 
-@click.command("get-re24", short_help="Get play by play of a specific game with RE24 for each play.")
-@click.option(
-    "--game-pk",
-    required=True,
-    help="Game PK for calculating RE24."
+
+@click.command(
+    "get-re24",
+    short_help="Get play by play of a specific game with RE24 for each play.",
 )
+@click.option("--game-pk", required=True, help="Game PK for calculating RE24.")
 @click.option(
     "--output",
     help="Location for the output file.",
     default=".",
-    type=click.Path(exists=True)
+    type=click.Path(exists=True),
 )
 @pass_environment
 def cli(ctx, game_pk, output):
@@ -40,13 +40,11 @@ def cli(ctx, game_pk, output):
 
     try:
         url = STATSAPI_URL + "/game/" + game_pk + "/playByPlay"
-        r = requests.get(url = url)
+        r = requests.get(url=url)
         data = r.json()
     except:
         ctx.log(
-            "Could not get play by play for game PK = {0}.".format(
-                game_pk
-            ),
+            "Could not get play by play for game PK = {0}.".format(game_pk),
             level="error",
         )
         raise click.UsageError("Failed to make request.")
@@ -55,29 +53,28 @@ def cli(ctx, game_pk, output):
 
     # Newer play by plays have the datetime in the play by play
     try:
-        year = datetime.strptime(data['allPlays'][0]['about']['endTime'], "%Y-%m-%dT%H:%M:%S.%fZ").year
+        year = datetime.strptime(
+            data["allPlays"][0]["about"]["endTime"], "%Y-%m-%dT%H:%M:%S.%fZ"
+        ).year
     # Older play by plays do not have a datetime, so retrieve it from the game's feed
     except:
         try:
             game_url = STATSAPI_URL + "/game/" + game_pk + "/feed/live"
-            game_r = requests.get(url = game_url)
+            game_r = requests.get(url=game_url)
             game_data = game_r.json()
-            year = datetime.strptime(game_data['gameData']['datetime']['dateTime'], "%Y-%m-%dT%H:%M:%SZ").year
+            year = datetime.strptime(
+                game_data["gameData"]["datetime"]["dateTime"], "%Y-%m-%dT%H:%M:%SZ"
+            ).year
         except:
             ctx.log(
-                "Could not get year for game PK = {0}.".format(
-                    game_pk
-                ),
-                level="error",
+                "Could not get year for game PK = {0}.".format(game_pk), level="error",
             )
             raise click.UsageError("Failed to make request.")
 
     re24 = get_re24(year)
     if not re24:
         ctx.log(
-            "Command only works for 2001 and after, not year = {0}.".format(
-                year
-            ),
+            "Command only works for 2001 and after, not year = {0}.".format(year),
             level="error",
         )
         raise click.UsageError("Failed to make request.")
@@ -93,25 +90,25 @@ def cli(ctx, game_pk, output):
     # TODO: Things I might not be capturing properly
     # stolen bases, caught stealing, wild pitches, passed balls in the middle of an at bat
     try:
-        for play in data['allPlays']:
+        for play in data["allPlays"]:
             # Pull relevant play data
-            half = play['about']['halfInning']
-            away_score = play['result']['awayScore']
-            home_score = play['result']['homeScore']
-            outs = play['count']['outs']
+            half = play["about"]["halfInning"]
+            away_score = play["result"]["awayScore"]
+            home_score = play["result"]["homeScore"]
+            outs = play["count"]["outs"]
 
             # TODO: postOnFirst, Second, Third only exists starting in 2003
             # create way of calculating based on runners[] for 2001 and 2002
-            first = play['matchup'].get('postOnFirst')
-            second = play['matchup'].get('postOnSecond')
-            third = play['matchup'].get('postOnThird')
+            first = play["matchup"].get("postOnFirst")
+            second = play["matchup"].get("postOnSecond")
+            third = play["matchup"].get("postOnThird")
 
             # If its a new half inning reset prev_outs
             if prev_half != half:
                 prev_outs = 0
 
             # Calculate runs scored on play
-            if play['about']['isScoringPlay'] == False:
+            if play["about"]["isScoringPlay"] == False:
                 runs_scored = 0
             elif half == "top":
                 runs_scored = away_score - prev_away_score
@@ -159,7 +156,7 @@ def cli(ctx, game_pk, output):
             final_re24 = float(end_re24) - float(start_re24) + runs_scored
 
             # Update the data with RE24
-            play.update({'re24': final_re24})
+            play.update({"re24": final_re24})
 
             # Keep track of the previous play's data
             prev_half = half
@@ -171,9 +168,7 @@ def cli(ctx, game_pk, output):
             prev_third = third
     except:
         ctx.log(
-            "Could not calculate RE24 for game PK = {0}.".format(
-                game_pk
-            ),
+            "Could not calculate RE24 for game PK = {0}.".format(game_pk),
             level="error",
         )
         raise click.UsageError("Failed to make request.")

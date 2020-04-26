@@ -9,6 +9,7 @@ import csv
 """third party modules"""
 import click
 
+
 def write_json_to_file(data, output_path):
     file = open(output_path, "w")
     n = file.write(json.dumps(data, sort_keys=True, indent=4))
@@ -16,13 +17,14 @@ def write_json_to_file(data, output_path):
 
     return True
 
+
 def get_re24(year):
     # Do not calculate RE24 for years before 2001
     if int(year) < 2001:
         return []
 
-    with open('./src/lib/re24.csv') as csv_file:
-        csv_reader = csv.reader(csv_file, delimiter=',')
+    with open("./src/lib/re24.csv") as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=",")
 
         re24 = []
         for row in csv_reader:
