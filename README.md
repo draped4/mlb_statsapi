@@ -1,7 +1,7 @@
 # CLI Tool for MLB's StatsAPI
 
 `statsapi` is a standardized tool that can be used to download data from
-MLB StatsAPI directly from the CLI. It was developed using a python package, [Click](https://click.palletsprojects.com/en/7.x/).
+MLB StatsAPI directly from the CLI. Some commands append additional data to the MLB StatsAPI responses. It was developed using a python package, [Click](https://click.palletsprojects.com/en/7.x/).
 
 ## Development & Setup
 
@@ -48,6 +48,7 @@ Commands:
                   statsapi.
   lookup-games    Lookup games by a value.
   lookup-players  Lookup players by a value.
+  lookup-re24     Lookup RE24 values by year.
 ```
 
 ### Standard StatsAPI Commands
@@ -149,6 +150,21 @@ Options:
   --help              Show this message and exit.
 ```
 
+#### `statsapi lookup-re24`  
+```sh
+Usage: statsapi lookup-re24 [OPTIONS]
+
+  lookup-re24 searches for RE24 values based on specified year. Only values
+  starting in 2001 are available.
+
+  Ex. statsapi lookup-re24 --year 2001 --output ./output_dir
+
+Options:
+  --year TEXT    Year for looking up RE24 values.  [required]
+  --output PATH  Location for the output file.
+  --help         Show this message and exit.
+```
+
 ### Add-on StatsAPI Commands
 
 The following commands add additional data to the standard StatsAPI endpoint responses.
@@ -172,6 +188,10 @@ Options:
 
 ## Output Files
 All output files are located in the specified output directory or if none is specified then the current directory. They all are JSON formatted and have the file name of <command_name>\_\<year>\_\<month>\_\<day>\_\<hour>\_\<minute>\_\<second>.json where the date time is when the file was created.
+
+## RE24
+
+RE24 values by year are from [Baseball Prospectus](https://legacy.baseballprospectus.com/sortable/index.php?cid=2800999).
 
 ## Python wrapper for MLB StatsAPI Endpoints
 

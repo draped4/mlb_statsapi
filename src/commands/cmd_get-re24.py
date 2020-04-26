@@ -1,7 +1,3 @@
-# https://legacy.baseballprospectus.com/sortable/index.php?cid=2800999
-# http://www.tangotiger.net/re24.html
-# https://library.fangraphs.com/misc/re24/
-
 """standard library"""
 import os
 import json
