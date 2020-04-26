@@ -36,7 +36,7 @@ FILENAME = "get_re24_" + datetime.today().strftime('%Y_%m_%d_%H_%M_%S') + ".json
 def cli(ctx, game_pk, output):
     """get-re24 play by play for a single game with calculated RE24. Play by play data only exists starting in 2001, due to data limitations this command only works starting in 2003.
 
-    Ex. statsapi get-re24 --game-pk --output ./output_dir"""
+    Ex. statsapi get-re24 --game-pk 566180 --output ./output_dir"""
 
     output_path = output + "/" + FILENAME
 

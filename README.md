@@ -25,7 +25,8 @@ statsapi version: v0.1.0
 ```
 
 ## CLI Commands
-### `statsapi --help`
+
+#### `statsapi --help`
 ```sh
 $ statsapi --help
 Usage: statsapi [OPTIONS] COMMAND [ARGS]...
@@ -42,12 +43,18 @@ Options:
 Commands:
   get             Get response directly from statsapi.
   get-gamepks     Get game pks for a date range from statsapi.
+  get-re24        Get play by play of a specific game with RE24 for each play.
   get-winprob     Get win probabilities per plate appearance for a game from
                   statsapi.
   lookup-games    Lookup games by a value.
   lookup-players  Lookup players by a value.
 ```
-### `statsapi get`  
+
+### Standard StatsAPI Commands
+
+The following commands can be used to download full or subsets of data using standard StatsAPI endpoints.
+
+#### `statsapi get`  
 ```sh
 $ statsapi get --help
 Usage: statsapi get [OPTIONS]
@@ -64,7 +71,8 @@ Options:
   --output PATH  Location for the output file.
   --help         Show this message and exit.
 ```
-### `statsapi get-gamepks`  
+
+#### `statsapi get-gamepks`  
 ```sh
 $ statsapi get-gamepks --help
 Usage: statsapi get-gamepks [OPTIONS]
@@ -81,7 +89,8 @@ Options:
   --output PATH       Location for the output file.
   --help              Show this message and exit.
 ```
-### `statsapi get-winprob`  
+
+#### `statsapi get-winprob`  
 ```sh
 $ statsapi get-winprob --help
 Usage: statsapi get-winprob [OPTIONS]
@@ -95,7 +104,12 @@ Options:
   --output PATH   Location for the output file.
   --help          Show this message and exit.
 ```
-### `statsapi lookup-players`
+
+### Lookup StatsAPI Commands
+
+The following commands can be used to lookup data by filtering based on key values.
+
+#### `statsapi lookup-players`
 ```sh
 $ statsapi lookup-players --help
 Usage: statsapi lookup-players [OPTIONS]
@@ -114,7 +128,8 @@ Options:
   --output PATH       Location for the output file.
   --help              Show this message and exit.
 ```
-### `statsapi lookup-games`  
+
+#### `statsapi lookup-games`  
 ```sh
 $ statsapi lookup-games --help
 Usage: statsapi lookup-games [OPTIONS]
@@ -132,6 +147,27 @@ Options:
   --sport-id INTEGER  Sport ID, MLB = 1
   --output PATH       Location for the output file.
   --help              Show this message and exit.
+```
+
+### Add-on StatsAPI Commands
+
+The following commands add additional data to the standard StatsAPI endpoint responses.
+
+#### `statsapi get-re24`  
+```sh
+$ statsapi get-re24 --help
+Usage: statsapi get-re24 [OPTIONS]
+
+  get-re24 play by play for a single game with calculated RE24. Play by play
+  data only exists starting in 2001, due to data limitations this command
+  only works starting in 2003.
+
+  Ex. statsapi get-re24 --game-pk 566180 --output ./output_dir
+
+Options:
+  --game-pk TEXT  Game PK for calculating RE24.  [required]
+  --output PATH   Location for the output file.
+  --help          Show this message and exit.
 ```
 
 ## Output Files
