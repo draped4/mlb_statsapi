@@ -152,6 +152,7 @@ Options:
 
 #### `statsapi lookup-re24`  
 ```sh
+$ statsapi lookup-re24 --help
 Usage: statsapi lookup-re24 [OPTIONS]
 
   lookup-re24 searches for RE24 values based on specified year. Only values
