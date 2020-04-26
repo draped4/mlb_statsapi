@@ -43,6 +43,7 @@ Options:
 Commands:
   get             Get response directly from statsapi.
   get-gamepks     Get game pks for a date range from statsapi.
+  get-lahman      Get data from Lahman's baseball database.
   get-re24        Get play by play of a specific game with RE24 for each play.
   get-winprob     Get win probabilities per plate appearance for a game from
                   statsapi.
@@ -168,7 +169,7 @@ Options:
 
 ### Add-on StatsAPI Commands
 
-The following commands add additional data to the standard StatsAPI endpoint responses.
+The following commands add additional data to the standard StatsAPI endpoint responses or retrieve data not associated with the standard StatsAPI endpoints.
 
 #### `statsapi get-re24`  
 ```sh
@@ -187,12 +188,31 @@ Options:
   --help          Show this message and exit.
 ```
 
+#### `statsapi get-lahman`  
+```sh
+$ statsapi get-lahman --help
+Usage: statsapi get-lahman [OPTIONS]
+
+  get-lahman retrieves data from Lahman's baseball database. Source:
+  http://www.seanlahman.com/baseball-archive/statistics/.
+
+  Ex. statsapi get-lahman --table Batting --output ./output_dir
+
+Options:
+  --table TEXT   Table to retrieve from Lahman's baseball database.
+                 [required]
+  --output PATH  Location for the output file.
+  --help         Show this message and exit.
+```
+
 ## Output Files
-All output files are located in the specified output directory or if none is specified then the current directory. They all are JSON formatted and have the file name of <command_name>\_\<year>\_\<month>\_\<day>\_\<hour>\_\<minute>\_\<second>.json where the date time is when the file was created.
+All output files are located in the specified output directory or if none is specified then the current directory. They all are JSON formatted and have the file name of `<command_name>_<year>_<month>_<day>_<hour>_<minute>_<second>.json` where the date time is when the file was created.
 
-## RE24
+## Data Sources
 
-RE24 values by year are from [Baseball Prospectus](https://legacy.baseballprospectus.com/sortable/index.php?cid=2800999).
+* MLB StatsAPI: https://statsapi.mlb.com/api/.  
+* Baseball Prospectus RE24 values by year: https://legacy.baseballprospectus.com/sortable/index.php?cid=2800999  
+* Lahman's Baseball Database: http://www.seanlahman.com/baseball-archive/statistics/
 
 ## Python wrapper for MLB StatsAPI Endpoints
 

@@ -7,6 +7,7 @@ VERSION = "0.1.0"
 CONTEXT_SETTINGS = dict(auto_envvar_prefix="STATSAPI")
 HOME = str(Path.home())
 STATSAPI_URL = "http://statsapi.mlb.com/api/v1"
+LAHMAN_URL = "https://lahman-2018.s3.amazonaws.com"
 
 # Callback function to print version message.
 def print_version(ctx, param, value):
