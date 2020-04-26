@@ -10,9 +10,7 @@ import click
 
 """internal statsapi modules"""
 from src.main import pass_environment, VERSION, STATSAPI_URL, LAHMAN_URL
-from src.lib import (
-    write_json_to_file,
-)
+from src.lib import write_json_to_file
 
 LAHMAN_TABLES = [
     "AllstarFull",
@@ -41,20 +39,19 @@ LAHMAN_TABLES = [
     "SeriesPost",
     "Teams",
     "TeamsFranchises",
-    "TeamsHalf"
+    "TeamsHalf",
 ]
+
 
 @click.command("get-lahman", short_help="Get data from Lahman's baseball database.")
 @click.option(
-    "--table",
-    required=True,
-    help="Table to retrieve from Lahman's baseball database."
+    "--table", required=True, help="Table to retrieve from Lahman's baseball database."
 )
 @click.option(
     "--output",
     help="Location for the output file.",
     default=".",
-    type=click.Path(exists=True)
+    type=click.Path(exists=True),
 )
 @pass_environment
 def cli(ctx, table, output):
@@ -62,7 +59,13 @@ def cli(ctx, table, output):
 
     Ex. statsapi get-lahman --table Batting --output ./output_dir"""
 
-    FILENAME = "get_lahman_" + table + "_" + datetime.today().strftime('%Y_%m_%d_%H_%M_%S') + ".json"
+    FILENAME = (
+        "get_lahman_"
+        + table
+        + "_"
+        + datetime.today().strftime("%Y_%m_%d_%H_%M_%S")
+        + ".json"
+    )
     output_path = output + "/" + FILENAME
 
     if table not in LAHMAN_TABLES:
@@ -78,9 +81,9 @@ def cli(ctx, table, output):
 
     try:
         url = LAHMAN_URL + "/" + table + ".csv"
-        r = requests.get(url = url)
+        r = requests.get(url=url)
 
-        reader = csv.reader(r.text.split('\n'), delimiter=',')
+        reader = csv.reader(r.text.split("\n"), delimiter=",")
         data_json = []
         keys = []
         count = 0
@@ -93,10 +96,7 @@ def cli(ctx, table, output):
                 data_json.append(dict(zipObj))
     except:
         ctx.log(
-            "Could not find data for table = {0}.".format(
-                table
-            ),
-            level="error",
+            "Could not find data for table = {0}.".format(table), level="error",
         )
         raise click.UsageError("Failed to make request.")
 

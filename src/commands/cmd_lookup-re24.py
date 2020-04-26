@@ -14,19 +14,16 @@ from src.lib import (
     get_re24,
 )
 
-FILENAME = "lookup_re24_" + datetime.today().strftime('%Y_%m_%d_%H_%M_%S') + ".json"
+FILENAME = "lookup_re24_" + datetime.today().strftime("%Y_%m_%d_%H_%M_%S") + ".json"
+
 
 @click.command("lookup-re24", short_help="Lookup RE24 values by year.")
-@click.option(
-    "--year",
-    required=True,
-    help="Year for looking up RE24 values."
-)
+@click.option("--year", required=True, help="Year for looking up RE24 values.")
 @click.option(
     "--output",
     help="Location for the output file.",
     default=".",
-    type=click.Path(exists=True)
+    type=click.Path(exists=True),
 )
 @pass_environment
 def cli(ctx, year, output):
@@ -50,7 +47,15 @@ def cli(ctx, year, output):
 
     try:
         re24_with_headers = []
-        keys = ['NUM', 'LVL', 'YEAR', 'RUNNERS', 'EXP_R_OUTS_0', 'EXP_R_OUTS_1', 'EXP_R_OUTS_2']
+        keys = [
+            "NUM",
+            "LVL",
+            "YEAR",
+            "RUNNERS",
+            "EXP_R_OUTS_0",
+            "EXP_R_OUTS_1",
+            "EXP_R_OUTS_2",
+        ]
         for row in re24:
             row[0] = int(row[0])
             row[2] = int(row[2])
@@ -62,13 +67,10 @@ def cli(ctx, year, output):
             re24_with_headers.append(dict(zipObj))
     except:
         ctx.log(
-            "Could not retrieve RE24 values for year = {0}.".format(
-                year
-            ),
+            "Could not retrieve RE24 values for year = {0}.".format(year),
             level="error",
         )
         raise click.UsageError("Failed to make request.")
-
 
     ctx.log("+ Writing RE24 values to {0}...".format(output_path))
 
