@@ -43,7 +43,7 @@ FILENAME = "get_weather_" + datetime.today().strftime("%Y_%m_%d_%H_%M_%S") + ".j
 )
 @pass_environment
 def cli(ctx, start, end, sport_id, output):
-    """get-weather retrieves schedule with weather data for games within the next 16 days from statsapi.
+    """get-weather retrieves schedule with weather data for games within the next 16 days from statsapi. Requires a free Weatherbit API Key.
 
     Ex. statsapi get-weather --start 04/01/2020 --end 04/15/2020 --output ./output_dir"""
 
@@ -122,7 +122,7 @@ def cli(ctx, start, end, sport_id, output):
 
                     # If no latlong then continue
                     if venue_latlong is None:
-                        game.update({"weather_data": "No weather found."})
+                        game.update({"weatherData": "No weather found."})
                         continue
 
                     # Calculate number of days between the game and today to pick the right forecast
@@ -148,7 +148,18 @@ def cli(ctx, start, end, sport_id, output):
                     weather_data = weather_r.json()
 
                     # TODO: Add other weather data too
-                    game.update({"weather_data": weather_data["data"][days]})
+                    weather_dict = weather_data["data"][days]
+                    weather_dict.update(
+                        {
+                            "city_name": weather_data["city_name"],
+                            "lon": weather_data["lon"],
+                            "timezone": weather_data["timezone"],
+                            "lat": weather_data["lat"],
+                            "country_code": weather_data["country_code"],
+                            "state_code": weather_data["state_code"],
+                        }
+                    )
+                    game.update({"weatherData": weather_dict})
     except:
         ctx.log(
             "Could not retrieve forecast starting on {0} and ending on {1}.".format(

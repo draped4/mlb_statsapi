@@ -213,7 +213,7 @@ $ statsapi get-weather --help
 Usage: statsapi get-weather [OPTIONS]
 
   get-weather retrieves schedule with weather data for games within the next
-  16 days from statsapi.
+  16 days from statsapi. Requires a free Weatherbit API Key.
 
   Ex. statsapi get-weather --start 04/01/2020 --end 04/15/2020 --output
   ./output_dir
