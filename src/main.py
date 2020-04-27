@@ -1,5 +1,6 @@
 import os
 import sys
+import json
 import click
 from pathlib import Path
 
@@ -8,6 +9,13 @@ CONTEXT_SETTINGS = dict(auto_envvar_prefix="STATSAPI")
 HOME = str(Path.home())
 STATSAPI_URL = "http://statsapi.mlb.com/api/v1"
 LAHMAN_URL = "https://lahman-2018.s3.amazonaws.com"
+WEATHERBIT_URL = "https://api.weatherbit.io/v2.0"
+
+try:
+    with open("config.json") as f:
+        WEATHERBIT_KEY = json.load(f)["weatherbit_api_key"]
+except:
+    WEATHERBIT_KEY = None
 
 # Callback function to print version message.
 def print_version(ctx, param, value):
