@@ -1,0 +1,123 @@
+[
+  {
+    "name": "Angel Stadium",
+    "lat": 33.8003,
+    "long": -117.8827
+  },{
+    "name": "Busch Stadium",
+    "lat": 38.6226,
+    "long": -90.1928
+  },{
+    "name": "Chase Field",
+    "lat": 33.4453,
+    "long": -112.0667
+  },{
+    "name": "Citi Field",
+    "lat": 40.7571,
+    "long": -73.8458
+  },{
+    "name": "Citizens Bank Park",
+    "lat": 39.9061,
+    "long": -75.1665
+  },{
+    "name": "Comerica Park",
+    "lat": 42.3390,
+    "long": -83.0485
+  },{
+    "name": "Coors Field",
+    "lat": 39.7559,
+    "long": -104.9942
+  },{
+    "name": "Dodger Stadium",
+    "lat": 34.0739,
+    "long": -118.2400
+  },{
+    "name": "Fenway Park",
+    "lat": 42.3467,
+    "long": -71.0972
+  },{
+    "name": "Globe Life Park in Arlington",
+    "lat": 32.7511,
+    "long": -97.0832
+  },{
+    "name": "Great American Ball Park",
+    "lat": 39.0974,
+    "long": -84.5071
+  },{
+    "name": "Guaranteed Rate Field",
+    "lat": 41.8299,
+    "long": -87.6338
+  },{
+    "name": "Kauffman Stadium",
+    "lat": 39.0517,
+    "long": -94.4803
+  },{
+    "name": "Marlins Park",
+    "lat": 25.7778,
+    "long": -80.2197
+  },{
+    "name": "Miller Park",
+    "lat": 43.0280,
+    "long": -87.9712
+  },{
+    "name": "Minute Maid Park",
+    "lat": 29.7573,
+    "long": -95.3555
+  },{
+    "name": "Nationals Park",
+    "lat": 38.8730,
+    "long": -77.0074
+  },{
+    "name": "Oakland Coliseum",
+    "lat": 37.7516,
+    "long": -122.2005
+  },{
+    "name": "Oracle Park",
+    "lat": 37.7786,
+    "long": -122.3893
+  },{
+    "name": "Oriole Park at Camden Yards",
+    "lat": 39.2839,
+    "long": -76.6216
+  },{
+    "name": "PNC Park",
+    "lat": 40.4469,
+    "long": -80.0057
+  },{
+    "name": "Petco Park",
+    "lat": 32.7076,
+    "long": -117.1570
+  },{
+    "name": "Progressive Field",
+    "lat": 41.4962,
+    "long": -81.6852
+  },{
+    "name": "Rogers Centre",
+    "lat": 43.6418,
+    "long": -79.3891
+  },{
+    "name": "Truist Park",
+    "lat": 33.8907,
+    "long": -84.4677
+  },{
+    "name": "T-Mobile Park",
+    "lat": 47.5914,
+    "long": -122.3325
+  },{
+    "name": "Target Field",
+    "lat": 44.9818,
+    "long": -93.2775
+  },{
+    "name": "Tropicana Field",
+    "lat": 27.7682,
+    "long": -82.6534
+  },{
+    "name": "Wrigley Field",
+    "lat": 41.9484,
+    "long": -87.6553
+  },{
+    "name": "Yankee Stadium",
+    "lat": 40.8296,
+    "long": -73.9262
+  }
+]

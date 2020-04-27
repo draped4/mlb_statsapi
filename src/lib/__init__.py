@@ -34,3 +34,14 @@ def get_re24(year):
                 break
 
     return re24
+
+
+# TODO: Add more than just the MLB venues
+def get_venue_latlong(venue):
+    with open("./src/lib/venues.json") as json_file:
+        venues = json.load(json_file)
+        for v in venues:
+            if v["name"] == venue:
+                return v
+
+    return None

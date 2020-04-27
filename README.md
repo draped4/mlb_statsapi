@@ -1,7 +1,7 @@
 # CLI Tool for MLB's StatsAPI
 
 `statsapi` is a standardized tool that can be used to download data from
-MLB StatsAPI directly from the CLI. Some commands append additional data to the MLB StatsAPI responses. It was developed using a python package, [Click](https://click.palletsprojects.com/en/7.x/).
+MLB's StatsAPI and other data sources directly from the CLI. Some commands append additional data to the MLB StatsAPI responses. It was developed using a python package, [Click](https://click.palletsprojects.com/en/7.x/).
 
 ## Development & Setup
 
@@ -45,6 +45,8 @@ Commands:
   get-gamepks     Get game pks for a date range from statsapi.
   get-lahman      Get data from Lahman's baseball database.
   get-re24        Get play by play of a specific game with RE24 for each play.
+  get-weather     Get schedule with weather data for future games from
+                  statsapi.
   get-winprob     Get win probabilities per plate appearance for a game from
                   statsapi.
   lookup-games    Lookup games by a value.
@@ -205,14 +207,45 @@ Options:
   --help         Show this message and exit.
 ```
 
+#### `statsapi get-weather`  
+```sh
+$ statsapi get-weather --help
+Usage: statsapi get-weather [OPTIONS]
+
+  get-weather retrieves schedule with weather data for games within the next
+  16 days from statsapi. Requires a free Weatherbit API Key.
+
+  Ex. statsapi get-weather --start 04/01/2020 --end 04/15/2020 --output
+  ./output_dir
+
+Options:
+  --start TEXT        Start date to search after, inclusive.
+  --end TEXT          End date to search before, inclusive.
+  --sport-id INTEGER  Sport ID, MLB = 1
+  --output PATH       Location for the output file.
+  --help              Show this message and exit.
+```
+
 ## Output Files
 All output files are located in the specified output directory or if none is specified then the current directory. They all are JSON formatted and have the file name of `<command_name>_<year>_<month>_<day>_<hour>_<minute>_<second>.json` where the date time is when the file was created.
 
+## Configurations
+
+Create and update a `config.json` file to add configurations for statsapi. The `config-template.json` file contains all of the configuration options:
+
+```json
+{
+  "weatherbit_api_key": "<insert free API key to enable weather data>"
+}
+```
+
+
 ## Data Sources
 
-* MLB StatsAPI: https://statsapi.mlb.com/api/.  
+* MLB StatsAPI: https://statsapi.mlb.com/api/  
 * Baseball Prospectus RE24 values by year: https://legacy.baseballprospectus.com/sortable/index.php?cid=2800999  
-* Lahman's Baseball Database: http://www.seanlahman.com/baseball-archive/statistics/
+* Lahman's Baseball Database: http://www.seanlahman.com/baseball-archive/statistics/  
+* Weatherbit API: https://www.weatherbit.io/api  
 
 ## Python wrapper for MLB StatsAPI Endpoints
 
