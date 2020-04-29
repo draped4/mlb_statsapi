@@ -44,6 +44,7 @@ Commands:
   get             Get response directly from statsapi.
   get-gamepks     Get game pks for a date range from statsapi.
   get-lahman      Get data from Lahman's baseball database.
+  get-pitches     Get pitches for a game from statsapi.
   get-re24        Get play by play of a specific game with RE24 for each play.
   get-weather     Get schedule with weather data for future games from
                   statsapi.
@@ -92,6 +93,21 @@ Options:
   --sport-id INTEGER  Sport ID, MLB = 1
   --output PATH       Location for the output file.
   --help              Show this message and exit.
+```
+
+#### `statsapi get-pitches`  
+```sh
+$ statsapi get-pitches --help
+Usage: statsapi get-pitches [OPTIONS]
+
+  get-pitches retrieves pitches for a specified game PK.
+
+  Ex. statsapi get-pitches --game-pk 566180 --output ./output_dir
+
+Options:
+  --game-pk TEXT  Game PK for retrieving pitches.  [required]
+  --output PATH   Location for the output file.
+  --help          Show this message and exit.
 ```
 
 #### `statsapi get-winprob`  
