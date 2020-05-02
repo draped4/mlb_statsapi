@@ -161,8 +161,8 @@ def cli(ctx, game_pk, output):
             # Keep track of the previous play's data
             prev_half = half
             prev_outs = outs
-            prev_home_score = away_score
-            prev_away_score = home_score
+            prev_home_score = home_score
+            prev_away_score = away_score
             prev_first = first
             prev_second = second
             prev_third = third
@@ -175,6 +175,6 @@ def cli(ctx, game_pk, output):
 
     ctx.log("+ Writing RE24 play by play to {0}...".format(output_path))
 
-    write_json_to_file(data, output_path)
+    write_json_to_file(data["allPlays"], output_path)
 
     ctx.log("Complete")

@@ -18,9 +18,14 @@ FILENAME = "lookup_players_" + datetime.today().strftime("%Y_%m_%d_%H_%M_%S") + 
 @click.option(
     "--value", required=True, help="The value to search for in player profiles."
 )
-@click.option("--game-type", help="Game type.", default="R")
-@click.option("--season", help="The season's year.", default=datetime.now().year)
-@click.option("--sport-id", help="Sport ID, MLB = 1", default=1)
+@click.option("--game-type", help="Game type.", default="R", show_default=True)
+@click.option(
+    "--season",
+    help="The season's year.",
+    default=datetime.now().year,
+    show_default=True,
+)
+@click.option("--sport-id", help="Sport ID, MLB = 1", default=1, show_default=True)
 @click.option(
     "--output",
     help="Location for the output file.",
