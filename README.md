@@ -3,6 +3,7 @@
 `statsapi` is a standardized tool that can be used to download data from
 MLB's StatsAPI and other data sources directly from the CLI. Some commands append additional data to the MLB StatsAPI responses. It was developed using a python package, [Click](https://click.palletsprojects.com/en/7.x/).
 
+
 ## Development & Setup
 
 To run the CLI tool locally on macOS or Linux execute the following CLI commands:
@@ -44,6 +45,7 @@ Commands:
   get             Get response directly from statsapi.
   get-gamepks     Get game pks for a date range from statsapi.
   get-lahman      Get data from Lahman's baseball database.
+  get-pitches     Get pitches for a game from statsapi.
   get-re24        Get play by play of a specific game with RE24 for each play.
   get-weather     Get schedule with weather data for future games from
                   statsapi.
@@ -83,8 +85,8 @@ Usage: statsapi get-gamepks [OPTIONS]
 
   get-gamepks retrieves game pks for every day within the date range.
 
-  Ex. statsapi get-gamepks --start 04/01/2019 --end 04/30/2019 --output
-  ./output_dir
+  Ex. statsapi get-gamepks --start 04/01/2019 --end 04/30/2019 --sport-id 1
+  --output ./output_dir
 
 Options:
   --start TEXT        Start date to search after, inclusive.
@@ -126,9 +128,9 @@ Usage: statsapi lookup-players [OPTIONS]
 
 Options:
   --value TEXT        The value to search for in player profiles.  [required]
-  --game-type TEXT    Game type.
-  --season INTEGER    The season's year.
-  --sport-id INTEGER  Sport ID, MLB = 1
+  --game-type TEXT    Game type.  [default: R]
+  --season INTEGER    The season's year.  [default: 2020]
+  --sport-id INTEGER  Sport ID, MLB = 1  [default: 1]
   --output PATH       Location for the output file.
   --help              Show this message and exit.
 ```
@@ -190,6 +192,23 @@ Options:
   --help          Show this message and exit.
 ```
 
+#### `statsapi get-pitches`  
+```sh
+$ statsapi get-pitches --help
+Usage: statsapi get-pitches [OPTIONS]
+
+  get-pitches retrieves pitches for a specified game PK. Play by play data
+  only exists starting in 2001, due to data limitations this command only
+  works starting in 2003.
+
+  Ex. statsapi get-pitches --game-pk 566180 --output ./output_dir
+
+Options:
+  --game-pk TEXT  Game PK for retrieving pitches.  [required]
+  --output PATH   Location for the output file.
+  --help          Show this message and exit.
+```
+
 #### `statsapi get-lahman`  
 ```sh
 $ statsapi get-lahman --help
@@ -246,6 +265,8 @@ Create and update a `config.json` file to add configurations for statsapi. The `
 * Baseball Prospectus RE24 values by year: https://legacy.baseballprospectus.com/sortable/index.php?cid=2800999  
 * Lahman's Baseball Database: http://www.seanlahman.com/baseball-archive/statistics/  
 * Weatherbit API: https://www.weatherbit.io/api  
+
+All data from MLB's StatsAPI has `Copyright 2020 MLB Advanced Media, L.P.  Use of any content on this page acknowledges agreement to the terms posted here http://gdx.mlb.com/components/copyright.txt"`
 
 ## Python wrapper for MLB StatsAPI Endpoints
 

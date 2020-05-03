@@ -36,7 +36,7 @@ FILENAME = "get_gamepks_" + datetime.today().strftime("%Y_%m_%d_%H_%M_%S") + ".j
 def cli(ctx, start, end, sport_id, output):
     """get-gamepks retrieves game pks for every day within the date range.
 
-    Ex. statsapi get-gamepks --start 04/01/2019 --end 04/30/2019 --output ./output_dir"""
+    Ex. statsapi get-gamepks --start 04/01/2019 --end 04/30/2019 --sport-id 1 --output ./output_dir"""
 
     output_path = output + "/" + FILENAME
 

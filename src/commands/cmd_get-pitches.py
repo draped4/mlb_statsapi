@@ -9,19 +9,14 @@ import click
 
 """internal statsapi modules"""
 from src.main import pass_environment, VERSION, STATSAPI_URL
-from src.lib import (
-    write_json_to_file,
-    get_re24,
-)
+from src.lib import write_json_to_file, get_re24
 
-FILENAME = "get_re24_" + datetime.today().strftime("%Y_%m_%d_%H_%M_%S") + ".json"
+FILENAME = "get_pitches_" + datetime.today().strftime("%Y_%m_%d_%H_%M_%S") + ".json"
+FILENAME_CSV = "get_pitches_" + datetime.today().strftime("%Y_%m_%d_%H_%M_%S") + ".csv"
 
 
-@click.command(
-    "get-re24",
-    short_help="Get play by play of a specific game with RE24 for each play.",
-)
-@click.option("--game-pk", required=True, help="Game PK for calculating RE24.")
+@click.command("get-pitches", short_help="Get pitches for a game from statsapi.")
+@click.option("--game-pk", required=True, help="Game PK for retrieving pitches.")
 @click.option(
     "--output",
     help="Location for the output file.",
@@ -30,13 +25,13 @@ FILENAME = "get_re24_" + datetime.today().strftime("%Y_%m_%d_%H_%M_%S") + ".json
 )
 @pass_environment
 def cli(ctx, game_pk, output):
-    """get-re24 play by play for a single game with calculated RE24. Play by play data only exists starting in 2001, due to data limitations this command only works starting in 2003.
+    """get-pitches retrieves pitches for a specified game PK. Play by play data only exists starting in 2001, due to data limitations this command only works starting in 2003.
 
-    Ex. statsapi get-re24 --game-pk 566180 --output ./output_dir"""
+    Ex. statsapi get-pitches --game-pk 566180 --output ./output_dir"""
 
     output_path = output + "/" + FILENAME
 
-    ctx.log("+ Retrieving play by play for game PK {0}...".format(game_pk))
+    ctx.log("+ Retrieving pitches for game PK = {0}...".format(game_pk))
 
     try:
         url = STATSAPI_URL + "/game/" + game_pk + "/playByPlay"
@@ -44,12 +39,13 @@ def cli(ctx, game_pk, output):
         data = r.json()
     except:
         ctx.log(
-            "Could not get play by play for game PK = {0}.".format(game_pk),
-            level="error",
+            "Could not get pitches from game PK = {0}.".format(game_pk), level="error",
         )
         raise click.UsageError("Failed to make request.")
 
-    ctx.log("+ Calculating RE24 for game PK {0}...".format(game_pk))
+    ctx.log(
+        "+ Filtering pitches and calculating RE24 for game PK {0}...".format(game_pk)
+    )
 
     # Newer play by plays have the datetime in the play by play
     try:
@@ -87,10 +83,10 @@ def cli(ctx, game_pk, output):
     prev_second = None
     prev_third = None
 
-    # TODO: Things I might not be capturing properly
-    # stolen bases, caught stealing, wild pitches, passed balls in the middle of an at bat
     try:
+        atbat_list = []
         for play in data["allPlays"]:
+            # START RE24
             # Pull relevant play data
             half = play["about"]["halfInning"]
             away_score = play["result"]["awayScore"]
@@ -155,9 +151,6 @@ def cli(ctx, game_pk, output):
             # Calculate RE24
             final_re24 = float(end_re24) - float(start_re24) + runs_scored
 
-            # Update the data with RE24
-            play.update({"re24": final_re24})
-
             # Keep track of the previous play's data
             prev_half = half
             prev_outs = outs
@@ -166,15 +159,44 @@ def cli(ctx, game_pk, output):
             prev_first = first
             prev_second = second
             prev_third = third
+            # STOP RE24
+
+            pitch_list = []
+            pitch_sequence = []
+            pitch_counts = []
+            prev_count = {"balls": 0, "strikes": 0}
+
+            for playEvent in play["playEvents"]:
+                if playEvent["isPitch"] == True:
+                    playEvent.update({"prevCount": prev_count})
+
+                    # If there is no type.code it is becasue it is an automatic ball on an IBB
+                    pitch_sequence.append(
+                        playEvent["details"].get("type", {"code": "AB"})["code"]
+                    )
+
+                    pitch_list.append(playEvent)
+
+                    prev_count = playEvent["count"]
+
+            atbat = {
+                "atBatIndex": play["atBatIndex"],
+                "matchup": play["matchup"],
+                "result": play["result"],
+                "pitches": pitch_list,
+                "pitchSequence": pitch_sequence,
+                "re24": final_re24,
+            }
+            atbat_list.append(atbat)
     except:
         ctx.log(
-            "Could not calculate RE24 for game PK = {0}.".format(game_pk),
+            "Could not parse pitches from game PK = {0}.".format(game_pk),
             level="error",
         )
         raise click.UsageError("Failed to make request.")
 
-    ctx.log("+ Writing RE24 play by play to {0}...".format(output_path))
+    ctx.log("+ Writing pitches to {0}...".format(output_path))
 
-    write_json_to_file(data["allPlays"], output_path)
+    write_json_to_file(atbat_list, output_path)
 
     ctx.log("Complete")
