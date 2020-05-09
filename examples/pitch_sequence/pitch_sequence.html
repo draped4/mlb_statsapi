@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<!--
+To run:
+npm install -g http-server
+http-server -c-1
+ -->
+<html>
+<head>
+<script
+  src="https://code.jquery.com/jquery-3.5.0.min.js"
+  integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ="
+  crossorigin="anonymous">
+</script>
+<!-- Pitch Types: - I don't think these are correct - missing FF=four-seam fastball
+FA	Fastball
+FT	Two-seam Fastball
+FC	Cut Fastball (Cutter)
+FS	Sinking Fastball / Split-Fingered (Splitter)
+SI	Sinker
+
+SL	Slider
+
+CU	Curveball
+KC	Knuckle-curve
+
+CH	Changeup
+
+EP	Eephus
+SC	Screwball
+KN	Knuckleball
+FO	Pitch Out
+UN	Unidentified
+ -->
+<script>
+  $.getJSON('../data/get_pitches_2020_04_28_11_51_44.json', function(data) {
+    $.each(data, function( i, atbat ) {
+      $(".pitch-sequence").append('<div class="atbat">' + atbat.matchup.batter.fullName + ' (' + atbat.matchup.batSide.code + 'HB) vs. ' + atbat.matchup.pitcher.fullName + ' (' + atbat.matchup.pitchHand.code + 'HP) - ' + atbat.result.event + '</div>')
+      $.each(atbat.pitches, function( j, pitch ) {
+        $(".pitch-sequence").append(' \
+          <div class="pitch-container"> \
+            <div class="ballzone ' + (pitch.details.hasOwnProperty('type') ? (['FF','FA','FT','FC','FS','SI'].includes(pitch.details.type.code) ? 'fastball' : (['SL'].includes(pitch.details.type.code) ? 'slider' : (['CU','KC'].includes(pitch.details.type.code) ? 'curveball' : (['CH'].includes(pitch.details.type.code) ? 'changeup' : 'other')))) : 'other') + '"> \
+              <div class="strikezone"> \
+                <div class="one ' + (pitch.pitchData.zone==1).toString() + '"></div> \
+                <div class="two ' + (pitch.pitchData.zone==2).toString() + '"></div> \
+                <div class="three ' + (pitch.pitchData.zone==3).toString() + '"></div> \
+                <div class="four ' + (pitch.pitchData.zone==4).toString() + '"></div> \
+                <div class="five ' + (pitch.pitchData.zone==5).toString() + '"></div> \
+                <div class="six ' + (pitch.pitchData.zone==6).toString() + '"></div> \
+                <div class="seven ' + (pitch.pitchData.zone==7).toString() + '"></div> \
+                <div class="eight ' + (pitch.pitchData.zone==8).toString() + '"></div> \
+                <div class="nine ' + (pitch.pitchData.zone==9).toString() + '"></div> \
+              </div> \
+              <div class="eleven ' + (pitch.pitchData.zone==11).toString() + '"></div> \
+              <div class="twelve ' + (pitch.pitchData.zone==12).toString() + '"></div> \
+              <div class="thirteen ' + (pitch.pitchData.zone==13).toString() + '"></div> \
+              <div class="fourteen ' + (pitch.pitchData.zone==14).toString() + '"></div> \
+            </div> \
+            <div class="count">' + (pitch.details.isInPlay ? "In Play" : (pitch.count.balls) + '-' + (pitch.count.strikes)) + '</div> \
+          </div> \
+        ');
+      });
+      $(".pitch-sequence").append('<br /><br />')
+    });
+  });
+</script>
+<style>
+  body {
+    background-color: #DDDDDD;
+  }
+
+  .legend {
+    width: 100%;
+    height: 5em;
+    color: white;
+    text-align: center;
+    margin-top: 2em;
+  }
+
+  .legend > .fastball, .slider, .curveball, .changeup, .other {
+    height: 100%;
+    width: 15%;
+    display: inline-block;
+    margin: 0 1%;
+  }
+
+  .legend .true {
+    height: 100%;
+    width: 100%;
+    line-height: 500%;
+  }
+
+  .pitch-container {
+    display: inline-block;
+    width: 5em;
+    margin: .5em;
+  }
+
+  .ballzone {
+    display: inline-block;
+    width: 5em;
+    height: 5em;
+    outline: 1px black solid;
+  }
+
+  .eleven, .twelve, .thirteen, .fourteen {
+    width: 50%;
+    height: 50%;
+    position: relative;
+    z-index: 1;
+    outline: 1px black solid;
+  }
+
+  .eleven {
+    top: -50%;
+    left: 0%;
+  }
+
+  .twelve {
+    top: -100%;
+    left: 50%;
+  }
+
+  .thirteen {
+    top: -100%;
+    left: 0%;
+  }
+
+  .fourteen {
+    top: -150%;
+    left: 50%;
+  }
+
+  .strikezone {
+    position: relative;
+    height: 50%;
+    width: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    z-index: 2;
+    outline: 1px black solid;
+  }
+
+  .one, .two, .three, .four, .five, .six, .seven, .eight, .nine {
+    width: 33.333%;
+    height: 33.333%;
+    position: relative;
+    z-index: 2;
+    outline: 1px black solid;
+  }
+
+  .one {
+    top: 0%;
+    left: 0%;
+  }
+
+  .two {
+    top: -33.333%;
+    left: 33.333%;
+  }
+
+  .three {
+    top: -66.666%;
+    left: 66.666%;
+  }
+
+  .four {
+    top: -66.666%;
+    left: 0%;
+  }
+
+  .five {
+    top: -100%;
+    left: 33.333%;
+  }
+
+  .six {
+    top: -133.333%;
+    left: 66.666%;
+  }
+
+  .seven {
+    top: -133.333%;
+    left: 0%;
+  }
+
+  .eight {
+    top: -166.666%;
+    left: 33.333%;
+  }
+
+  .nine {
+    top: -200%;
+    left: 66.666%;
+  }
+
+  .false {
+    background-color: white;
+  }
+
+  .fastball .true {
+    background-color: #619B8A;
+  }
+
+  .slider .true  {
+    background-color: #FE7F2D;
+  }
+
+  .curveball .true  {
+    background-color: #FCCA46;
+  }
+
+  .changeup .true  {
+    background-color: #A1C181;
+  }
+
+  .other .true  {
+    background-color: #233D4D;
+  }
+
+  .count {
+    display: inline-block;
+    width: 5em;
+    height: 1em;
+    margin: .5em 0em;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div class="legend">
+  <div class="fastball">
+    <div class="true">Fastball</div>
+  </div>
+  <div class="changeup">
+    <div class="true">Changeup</div>
+  </div>
+  <div class="slider">
+    <div class="true">Slider</div>
+  </div>
+  <div class="curveball">
+    <div class="true">Curveball</div>
+  </div>
+  <div class="other">
+    <div class="true">Other</div>
+  </div>
+</div>
+<br /><br />
+<div class="pitch-sequence"></div>
+
+</body>
+</html>
