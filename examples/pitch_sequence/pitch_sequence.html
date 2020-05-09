@@ -32,7 +32,7 @@ FO	Pitch Out
 UN	Unidentified
  -->
 <script>
-  $.getJSON('../data/get_pitches_2020_04_28_11_51_44.json', function(data) {
+  $.getJSON('./get_pitches_2020_04_28_11_51_44.json', function(data) {
     $.each(data, function( i, atbat ) {
       $(".pitch-sequence").append('<div class="atbat">' + atbat.matchup.batter.fullName + ' (' + atbat.matchup.batSide.code + 'HB) vs. ' + atbat.matchup.pitcher.fullName + ' (' + atbat.matchup.pitchHand.code + 'HP) - ' + atbat.result.event + '</div>')
       $.each(atbat.pitches, function( j, pitch ) {
